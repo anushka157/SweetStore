@@ -3,6 +3,7 @@
 import React from "react";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import { CartItem } from "../../types/cartTypes";
+import { domain } from "../../utils/domain";
 
 const PaymentComponent = () => {
 
@@ -32,7 +33,7 @@ const PaymentComponent = () => {
 
 
         const response = await fetch(
-            "http://localhost:5005/cod-payment",
+            `${domain}/cod-payment`,
             {
                 method: "POST",
 
@@ -113,7 +114,7 @@ const PaymentComponent = () => {
 
             // STEP 1: CREATE RAZORPAY ORDER
             const response = await fetch(
-                "http://localhost:5005/create-order",
+                `${domain}/create-order`,
                 {
                     method: "POST",
 
@@ -150,7 +151,7 @@ const PaymentComponent = () => {
 
             const options: RazorpayOrderOptions = {
 
-                key: "rzp_test_TRDKahrBexATTz",
+                key: order.key_id,
 
                 amount: order.amount,
 
@@ -202,7 +203,7 @@ console.log(
 );
 
 const verifyResponse = await fetch(
-    "http://localhost:5005/verify-payment",
+    `${domain}/verify-payment`,
     {
         method: "POST",
 

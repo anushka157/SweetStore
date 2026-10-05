@@ -5,5 +5,8 @@ node_modules/
 build/
 dist/
 *.log
+/.local/mysql/
+/attached_assets/*.sql
+/attached_assets/*.sql.gz
 
 

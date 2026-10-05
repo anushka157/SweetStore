@@ -5,16 +5,23 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 require("dotenv").config();
 
-const razorpay = new Razorpay({
+const razorpay = process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET
+  ? new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
+  })
+  : null;
+if (!razorpay) {
+    console.warn("Razorpay is not configured. Card payments are unavailable.");
+}
+router.use(["/create-order", "/verify-payment"], (req, res, next) => {
+    if (!razorpay) {
+        return res.status(503).json({
+            error: "Card payments are not configured. Add Razorpay credentials in Replit Secrets.",
+        });
+    }
+    next();
 });
-
-console.log("RAZORPAY KEY ID =", process.env.RAZORPAY_KEY_ID);
-console.log(
-    "RAZORPAY SECRET EXISTS =",
-    !!process.env.RAZORPAY_KEY_SECRET
-);
 // CREATE RAZORPAY ORDER
 router.post("/create-order", async (req, res) => {
 
@@ -40,7 +47,7 @@ router.post("/create-order", async (req, res) => {
 
         console.log("RAZORPAY ORDER =", order);
 
-        return res.status(200).json(order);
+        return res.status(200).json({ ...order, key_id: process.env.RAZORPAY_KEY_ID });
 
     } catch (error) {
 

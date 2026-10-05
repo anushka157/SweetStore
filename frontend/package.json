@@ -2,6 +2,11 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "overrides": {
+    "websocket-driver": "^0.7.5",
+    "shell-quote": "^1.8.3",
+    "form-data": "^4.0.4"
+  },
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",

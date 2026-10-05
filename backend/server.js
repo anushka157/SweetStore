@@ -1,3 +1,5 @@
+require("dotenv").config();
+require("./config/auth");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -14,6 +16,16 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.get("/health", (req, res) => {
+  require("./config/db").query("SELECT 1", (error) => {
+    res.status(error ? 503 : 200).json({
+      status: error ? "database_unavailable" : "ok",
+      paymentsConfigured: Boolean(
+        process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET
+      ),
+    });
+  });
+});
 app.use(
   "/uploads",
   express.static(path.join(__dirname, "uploads"))

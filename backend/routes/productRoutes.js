@@ -52,9 +52,9 @@ router.get("/all-products/:pageNo", (req, res) => {
 // }));
 const products = result.map(product => ({
   ...product,
-  image_url: product.image_url.startsWith("/sweetsImages")
+  image_url: (product.image_url || "").startsWith("/sweetsImages")
       ? product.image_url
-      : `${req.protocol}://${req.get("host")}/uploads/${product.image_url}`
+      : `/uploads/${product.image_url}`
 }));
 console.log(result)
 res.json({

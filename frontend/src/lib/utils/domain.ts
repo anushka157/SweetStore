@@ -3,4 +3,4 @@
 // // export const domain = "http://localhost:5005"
 
 export const domain =
-  process.env.REACT_APP_API_URL || "http://localhost:5005";
+  process.env.REACT_APP_API_URL || "/api";

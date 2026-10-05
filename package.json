@@ -4,6 +4,7 @@
   "description": "- [Admin Panel](#admin-panel)\r   - [Admin Login](#admin-login)\r   - [Manage Customers](#manage-customers)\r   - [Manage Orders](#manage-orders)\r   - [Manage Products](#manage-products)\r   - [Manage Sellers](#manage-sellers)\r   - [Product Approval](#product-approval)\r - [Customer Experience](#customer-experience)\r   - [Customer Registration](#customer-registration)\r   - [Customer Login](#customer-login)\r   - [Invalid Password Error](#invalid-password-error)\r   - [Customer Product Page](#customer-product-page)\r   - [Cart](#cart)\r   - [Empty Cart](#empty-cart)\r   - [Checkout](#checkout)\r   - [Add Review](#add-review)\r   - [Review Submission Error](#review-submission-error)\r   - [No Reviews Found](#no-reviews-found)\r   - [Product Reviews](#product-reviews)\r   - [Review Added Successfully](#review-added-successfully)\r - [Seller Dashboard](#seller-dashboard)\r   - [Seller Registration](#seller-registration)\r   - [Seller Login](#seller-login)\r   - [New Product Approval Form](#new-product-approval-form)\r   - [Product Listing](#product-listing)\r - [Payment Process](#payment-process)\r   - [Confirming Payment](#confirming-payment)\r   - [Razorpay Loading](#razorpay-loading)\r   - [Razorpay Card Payment](#razorpay-card-payment)\r   - [Razorpay Payment Step 1](#razorpay-payment-step-1)\r - [Pagination](#pagination)",
   "main": "index.js",
   "scripts": {
+    "dev": "node scripts/start-development.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

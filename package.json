@@ -1,0 +1,27 @@
+{
+  "name": "sweetstore_project_anushka",
+  "version": "1.0.0",
+  "description": "- [Admin Panel](#admin-panel)\r   - [Admin Login](#admin-login)\r   - [Manage Customers](#manage-customers)\r   - [Manage Orders](#manage-orders)\r   - [Manage Products](#manage-products)\r   - [Manage Sellers](#manage-sellers)\r   - [Product Approval](#product-approval)\r - [Customer Experience](#customer-experience)\r   - [Customer Registration](#customer-registration)\r   - [Customer Login](#customer-login)\r   - [Invalid Password Error](#invalid-password-error)\r   - [Customer Product Page](#customer-product-page)\r   - [Cart](#cart)\r   - [Empty Cart](#empty-cart)\r   - [Checkout](#checkout)\r   - [Add Review](#add-review)\r   - [Review Submission Error](#review-submission-error)\r   - [No Reviews Found](#no-reviews-found)\r   - [Product Reviews](#product-reviews)\r   - [Review Added Successfully](#review-added-successfully)\r - [Seller Dashboard](#seller-dashboard)\r   - [Seller Registration](#seller-registration)\r   - [Seller Login](#seller-login)\r   - [New Product Approval Form](#new-product-approval-form)\r   - [Product Listing](#product-listing)\r - [Payment Process](#payment-process)\r   - [Confirming Payment](#confirming-payment)\r   - [Razorpay Loading](#razorpay-loading)\r   - [Razorpay Card Payment](#razorpay-card-payment)\r   - [Razorpay Payment Step 1](#razorpay-payment-step-1)\r - [Pagination](#pagination)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "mysql2": "^3.22.4",
+    "razorpay": "^2.9.8",
+    "uuid": "^14.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

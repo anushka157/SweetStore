@@ -6,3 +6,18 @@ packages = ["mysql84"]
 
 [agent]
 expertMode = true
+
+[[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
+localPort = 3001
+externalPort = 3001
+
+[[ports]]
+localPort = 5005
+externalPort = 80
+[deployment]
+run = ["npm", "--prefix", "backend", "start"]
+deploymentTarget = "cloudrun"

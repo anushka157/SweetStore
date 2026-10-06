@@ -287,7 +287,25 @@ getUnassignedOrders: (callback) => {
     connection.query(query, callback);
   },
 
+getApprovedDeliveryPartners: (callback) => {
 
+  const query = `
+    SELECT
+      dp.delivery_partner_id,
+      dp.registered_user_id,
+      dp.name,
+      dp.phone_number,
+      dp.approval_status,
+      u.email
+    FROM delivery_partner dp
+    INNER JOIN user u
+      ON dp.registered_user_id = u.user_id
+    WHERE dp.approval_status = 'approved'
+    ORDER BY dp.name ASC
+  `;
+
+  connection.query(query, callback);
+},
   approveDeliveryPartner: (
     deliveryPartnerId,
     callback

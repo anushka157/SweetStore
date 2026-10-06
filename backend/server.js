@@ -39,8 +39,6 @@ app.use("/", deliveryPartnerRoutes);
 // });
 
 const frontendBuildPath = path.join(__dirname, "../frontend/build");
-<<<<<<< Updated upstream
-
 console.log("FRONTEND BUILD:", frontendBuildPath);
 
 app.use(express.static(frontendBuildPath));
@@ -48,10 +46,6 @@ app.use(express.static(frontendBuildPath));
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(frontendBuildPath, "index.html"));
 });
-=======
->>>>>>> Stashed changes
-
-app.use(express.static(frontendBuildPath));
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(frontendBuildPath, "index.html"));

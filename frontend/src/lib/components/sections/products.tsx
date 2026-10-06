@@ -436,10 +436,7 @@ import { FaRegStar } from "react-icons/fa";
 import Pagination from "../pagination/Pagination";
 import { Link, useLoaderData } from "react-router-dom";
 
-import {
-  getAllProducts,
-  getAllProductsBySeller,
-} from "../../data/productAPI";
+import { getAllProducts, getAllProductsBySeller } from "../../data/productAPI";
 
 import { productWithImage } from "../../types/customerProductTypes";
 
@@ -480,28 +477,18 @@ export default function Product() {
 
   if (typeof loaderActionData === "string") {
     return (
-      <p className="p-4 sm:p-6 text-center text-red-500">
-        {loaderActionData}
-      </p>
+      <p className="p-4 sm:p-6 text-center text-red-500">{loaderActionData}</p>
     );
   }
 
   const images = loaderActionData.withSignedImages || [];
 
   if (!loaderActionData.withSignedImages) {
-    return (
-      <p className="p-4 sm:p-6 text-center">
-        No products found
-      </p>
-    );
+    return <p className="p-4 sm:p-6 text-center">No products found</p>;
   }
 
   if (images.length === 0) {
-    return (
-      <p className="p-4 sm:p-6 text-center">
-        No products available
-      </p>
-    );
+    return <p className="p-4 sm:p-6 text-center">No products available</p>;
   }
 
   // Logged-in roles
@@ -514,14 +501,14 @@ export default function Product() {
   const renderImages = images.map((imagepath) => {
     // Customer products may already have a complete image URL.
     // Seller products return only the image filename.
-    const imageSrc =
-      imagepath.image_url &&
-      imagepath.image_url.startsWith("http")
+    console.log("HOME PRODUCTS IMAGE DATA =", images);
+    const imageSrc = imagepath.image_url
+      ? imagepath.image_url.startsWith("http")
         ? imagepath.image_url
-        : imagepath.image_url
-          ? `${domain}/uploads/${imagepath.image_url}`
-          : "";
-
+        : imagepath.image_url.startsWith("/")
+          ? `${domain}${imagepath.image_url}`
+          : `${domain}/uploads/${imagepath.image_url}`
+      : "";
     return (
       <div
         key={imagepath.product_id}
@@ -577,7 +564,6 @@ export default function Product() {
 
         {/* PRODUCT INFORMATION */}
         <div className="mt-3 flex flex-col flex-1">
-
           {/* PRODUCT NAME */}
           <Link
             to={`details?productId=${imagepath.product_id}`}
@@ -600,19 +586,13 @@ export default function Product() {
           {/* STARS */}
           <p className="flex gap-1 mt-2">
             {[...Array(5)].map((_, index) => (
-              <FaRegStar
-                key={index}
-                size={17}
-                className="sm:w-5 sm:h-5"
-              />
+              <FaRegStar key={index} size={17} className="sm:w-5 sm:h-5" />
             ))}
           </p>
 
           {/* PRICE */}
           <p className="mt-2 flex items-center">
-            <span className="font-semibold text-base sm:text-lg">
-              ₹
-            </span>
+            <span className="font-semibold text-base sm:text-lg">₹</span>
 
             <span
               className="

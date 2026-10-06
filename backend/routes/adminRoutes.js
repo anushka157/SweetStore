@@ -25,7 +25,7 @@ const {
   getUnassignedOrders,
     assignDeliveryPartner,
 getAllOrders,
-
+getApprovedDeliveryPartners,
 } = require("../controllers/adminController");
 
 
@@ -113,7 +113,11 @@ router.get(
   verifyAdmin,
   getAllSellerProducts
 );
-
+router.get(
+  "/admin/delivery-partners/approved",
+  verifyAdmin,
+  getApprovedDeliveryPartners
+);
 
 router.get(
   "/admin/products/:productId",

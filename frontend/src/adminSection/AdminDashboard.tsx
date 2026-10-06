@@ -79,6 +79,9 @@ const AdminDashboard = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [deliveryPartners, setDeliveryPartners] = useState<DeliveryPartner[]>([]);
 
+
+  const [approvedDeliveryPartners, setApprovedDeliveryPartners] =
+  useState<DeliveryPartner[]>([]);
   const [activeSection, setActiveSection] = useState<
     "products" | "sellers" | "sellerProducts" | "orders" | "deliveryPartners"
   >("products");
@@ -486,7 +489,49 @@ return `${domain}/${cleanPath}`;
 
     fetchPendingDeliveryPartners();
   };
+const fetchApprovedDeliveryPartners = async () => {
+  try {
 
+    if (!token) {
+      window.location.href = "/admin/login";
+      return;
+    }
+
+    const response = await fetch(
+      `${domain}/admin/delivery-partners/approved`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setMessage(
+        data.message ||
+        data.error ||
+        "Failed to fetch approved delivery partners"
+      );
+      return;
+    }
+
+    setApprovedDeliveryPartners(
+      data.deliveryPartners || []
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Error fetching approved delivery partners:",
+      error
+    );
+
+    setMessage("Unable to connect to server");
+  }
+};
   // =====================================================
   // INITIAL LOAD
   // =====================================================
@@ -749,13 +794,13 @@ return `${domain}/${cleanPath}`;
   // ORDERS SECTION
   // =====================================================
 
-  const handleOrdersSection = () => {
-    setActiveSection("orders");
-    setMessage("");
+ const handleOrdersSection = () => {
+  setActiveSection("orders");
+  setMessage("");
 
-    fetchAllOrders();
-  };
-
+  fetchAllOrders();
+  fetchApprovedDeliveryPartners();
+};
   // =====================================================
   // VIEW PRODUCT DETAILS
   // =====================================================
@@ -903,6 +948,69 @@ return `${domain}/${cleanPath}`;
     return "bg-yellow-100 text-yellow-700";
   };
 
+
+
+  const handleAssignDeliveryPartner = async (
+  orderItemId: string,
+  deliveryPartnerId: string
+) => {
+
+  try {
+
+    if (!token) {
+      window.location.href = "/admin/login";
+      return;
+    }
+
+    if (!deliveryPartnerId) {
+      setMessage("Please select a delivery partner");
+      return;
+    }
+
+    const response = await fetch(
+      `${domain}/admin/orders/${orderItemId}/assign-delivery-partner`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          deliveryPartnerId,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+      setMessage(
+        data.message ||
+        data.error ||
+        "Failed to assign delivery partner"
+      );
+
+      return;
+    }
+
+    setMessage(
+      "Delivery partner assigned successfully"
+    );
+
+    // Refresh orders
+    fetchAllOrders();
+
+  } catch (error) {
+
+    console.error(
+      "ASSIGN DELIVERY PARTNER ERROR =",
+      error
+    );
+
+    setMessage("Unable to connect to server");
+  }
+};
   // =====================================================
   // UI
   // =====================================================
@@ -1983,35 +2091,70 @@ return `${domain}/${cleanPath}`;
 
                         <td className="p-4">
 
-                          {order.delivery_partner_name ? (
+  {order.delivery_partner_name ? (
 
-                            <div>
+    <div>
+      <div className="font-medium">
+        {order.delivery_partner_name}
+      </div>
 
-                              <div className="font-medium">
-                                {
-                                  order.delivery_partner_name
-                                }
-                              </div>
+      <div className="text-xs text-gray-500">
+        {order.delivery_partner_phone || "-"}
+      </div>
+    </div>
 
-                              <div className="text-xs text-gray-500">
-                                {
-                                  order.delivery_partner_phone ||
-                                  "-"
-                                }
-                              </div>
+  ) : (
 
-                            </div>
+    <div className="flex flex-col gap-2 min-w-[180px]">
 
-                          ) : (
+      <span className="text-gray-400">
+        Not Assigned
+      </span>
 
-                            <span className="text-gray-400">
-                              Not Assigned
-                            </span>
+      <select
+        defaultValue=""
+        className="border rounded-md px-3 py-2 text-sm bg-white"
+        onChange={(e) => {
 
-                          )}
+          const deliveryPartnerId =
+            e.target.value;
 
-                        </td>
+          if (!deliveryPartnerId) {
+            return;
+          }
 
+          handleAssignDeliveryPartner(
+            order.order_item_id,
+            deliveryPartnerId
+          );
+
+        }}
+      >
+
+        <option value="">
+          Assign Partner
+        </option>
+
+        {approvedDeliveryPartners.map(
+          (partner) => (
+
+            <option
+              key={partner.delivery_partner_id}
+              value={partner.delivery_partner_id}
+            >
+              {partner.name}
+            </option>
+
+          )
+        )}
+
+      </select>
+
+    </div>
+
+  )}
+
+</td>
 
                         {/* DELIVERY STATUS */}
 

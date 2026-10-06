@@ -301,7 +301,44 @@ async function getPendingDeliveryPartners(
   }
 }
 
+async function getApprovedDeliveryPartners(req, res) {
 
+  try {
+
+    Admin.getApprovedDeliveryPartners(
+      (error, results) => {
+
+        if (error) {
+
+          console.log(
+            "GET APPROVED DELIVERY PARTNERS ERROR =",
+            error
+          );
+
+          return res.status(500).json({
+            error:
+              "Unable to fetch approved delivery partners",
+          });
+        }
+
+        return res.status(200).json({
+          deliveryPartners: results,
+        });
+      }
+    );
+
+  } catch (error) {
+
+    console.log(
+      "GET APPROVED DELIVERY PARTNERS ERROR =",
+      error
+    );
+
+    return res.status(500).json({
+      error: "Something went wrong",
+    });
+  }
+}
 async function approveDeliveryPartner(
   req,
   res
@@ -629,7 +666,7 @@ rejectProduct,
   getPendingDeliveryPartners,
   approveDeliveryPartner,
   rejectDeliveryPartner,
-
+getApprovedDeliveryPartners,
 
    // ORDER ASSIGNMENT
   assignDeliveryPartner,

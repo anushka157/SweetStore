@@ -1,12 +1,11 @@
 const {
-  addNewProduct,
-  getAllProducts,
-  getProductById
+    addNewProduct,
+    getAllProducts,
+    getProductById,
 } = require("../controllers/productController");
 const express = require("express");
 const router = express.Router();
 const connection = require("../config/db");
-
 
 // ==========================================
 // GET ALL PRODUCTS
@@ -15,10 +14,7 @@ router.get("/all-products/:pageNo", (req, res) => {
     //console.log("PRODUCT ROUTES FILE RUNNING");
     console.log("ALL PRODUCTS API HIT");
 
-
     const pageNo = parseInt(req.params.pageNo);
-
-    const offset = (pageNo - 1) * 10;
 
     const query = `
         SELECT
@@ -27,15 +23,14 @@ router.get("/all-products/:pageNo", (req, res) => {
         FROM products p
         LEFT JOIN product_images pi
             ON p.product_id = pi.product_id
-            WHERE p.approval_status = 'approved'
-        LIMIT ?, 10
+        WHERE p.approval_status = 'approved'
     `;
 
-    connection.query(query, [offset], (err, result) => {
+    connection.query(query, (err, result) => {
         console.log("MYSQL RESULT =", result);
         if (err) {
             return res.status(500).json({
-                error: err.message
+                error: err.message,
             });
         }
 
@@ -44,34 +39,31 @@ router.get("/all-products/:pageNo", (req, res) => {
         //     pageNo: pageNo,
         //     withSignedImages: result
         // });
-//      const products = result.map(product => ({
-//     ...product,
-//     image_url: product.image_url.startsWith("/sweetsImages")
-//         ? product.image_url
-//         : `http://localhost:5005/uploads/${product.image_url}`
-// }));
-const products = result.map(product => ({
-  ...product,
-  image_url: (product.image_url || "").startsWith("/sweetsImages")
-      ? product.image_url
-      : `/uploads/${product.image_url}`
-}));
-console.log(result)
-res.json({
-    totalPages: 1,
-    pageNo,
-    withSignedImages: products
-});
+        //      const products = result.map(product => ({
+        //     ...product,
+        //     image_url: product.image_url.startsWith("/sweetsImages")
+        //         ? product.image_url
+        //         : `http://localhost:5005/uploads/${product.image_url}`
+        // }));
+        const products = result.map((product) => ({
+            ...product,
+            image_url: (product.image_url || "").startsWith("/sweetsImages")
+                ? product.image_url
+                : `/uploads/${product.image_url}`,
+        }));
+        console.log(result);
+        res.json({
+            totalPages: 1,
+            pageNo,
+            withSignedImages: products,
+        });
     });
-
 });
-
 
 // ==========================================
 // GET PRODUCT DETAILS
 // ==========================================
 router.get("/product/detail/:productId", (req, res) => {
-
     const productId = req.params.productId;
 
     const query = `
@@ -106,16 +98,15 @@ router.get("/product/detail/:productId", (req, res) => {
     `;
 
     connection.query(query, [productId], (err, result) => {
-
         if (err) {
             return res.status(500).json({
-                error: err.message
+                error: err.message,
             });
         }
 
         if (result.length === 0) {
             return res.status(404).json({
-                error: "Product not found"
+                error: "Product not found",
             });
         }
 
@@ -133,12 +124,10 @@ router.get("/product/detail/:productId", (req, res) => {
                 businessName: row.business_name,
                 city: row.city,
                 country: row.country,
-                signerUrl: row.image_url
-            }
+                signerUrl: row.image_url,
+            },
         });
-
     });
-
 });
 
 module.exports = router;

@@ -2,7 +2,7 @@ modules = ["nodejs-20", "web"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["mysql84"]
+packages = ["mysql84", "nano"]
 
 [agent]
 expertMode = true
@@ -19,5 +19,5 @@ externalPort = 3001
 localPort = 5005
 externalPort = 80
 [deployment]
-run = ["npm", "--prefix", "backend", "start"]
+run = ["bash", "start-production.sh"]
 deploymentTarget = "cloudrun"
